@@ -18,7 +18,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build Solution - Release
-        run: msbuild SAIM.sln /p:Configuration=Release /p:Platform=Win32 /m
+        run: msbuild SAIM.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /m
 
       - name: Rename DLL to ASI
         run: |
