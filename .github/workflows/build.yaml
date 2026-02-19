@@ -1,0 +1,40 @@
+name: Build SAIM ASI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Solution - Release
+        run: msbuild SAIM.sln /p:Configuration=Release /p:Platform=Win32 /m
+
+      - name: Rename DLL to ASI
+        run: |
+          $dll = Get-ChildItem -Recurse -Filter "*.dll" | Where-Object { $_.DirectoryName -match "Release" } | Select-Object -First 1
+          if ($dll) {
+            $asi = $dll.FullName -replace "\.dll$", ".asi"
+            Copy-Item $dll.FullName $asi
+            Write-Host "Renamed: $($dll.FullName) -> $asi"
+          }
+        shell: pwsh
+
+      - name: Upload ASI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SAIM-asi
+          path: |
+            Release/*.asi
+            Release/*.dll
+          if-no-files-found: warn
