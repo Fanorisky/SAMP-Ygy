@@ -77,10 +77,10 @@ void AimbotOn()
 
 void AimbotOFF()
 {
-	 // No Spread OFF
-			for (int addr = 0xC8C450; addr < 0xC8C8B0; addr += 0x70)
-                *(DWORD *)addr = 0x3F800000;
-     Sleep(10);
+	// No Spread OFF
+	for (int addr = 0xC8C450; addr < 0xC8C8B0; addr += 0x70)
+        *(DWORD *)addr = 0x3F800000;
+    Sleep(10);
 // ExitThread(0);
 }
 
@@ -88,28 +88,30 @@ void AimbotOFF()
 void main()
 {
    while(1)
-  {
-	  if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000)
-        {
+   {
+	   if ((GetAsyncKeyState(VK_LCONTROL) & 0x8000) && (GetAsyncKeyState(VK_F3) & 0x8000))
+       {
             Sleep(200);
             AimToggle = !AimToggle;
 
 			 if (AimToggle) {
-                 gta_showText("[ugbase.eu]~g~Aimbot Activated!!", 2000, NULL, NULL);
+                 gta_showText("~g~Cees Hytam Activated!!", 2000, NULL, NULL);
 				
             }
             else {
-            	gta_showText("[ugbase.eu]~r~Aimbot Deactivated!!", 2000, NULL, NULL);
+            	gta_showText("~r~Cees Hytam Deactivated!!", 2000, NULL, NULL);
 			
 			}
         }
 				
-		 if (AimToggle) {
-                AimbotOn();
-            }
-            else {
-            	AimbotOFF();
-          }
+		if (AimToggle) 
+        {
+            AimbotOn();
+        }
+        else 
+        {
+        	AimbotOFF();
+        }
     }
    
 }
